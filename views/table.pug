@@ -30,7 +30,7 @@ each user, i in users
         td= user.age
         <td>
             form(action="/add?_method=DELETE&name="+user.name+"&age="+user.age+"" method="post")
-                <button type="submit" class="warning">delete</button>
+                button(type='submit' class='btn btn-danger' value="Delete" onclick='deletFunc("/add", { name:'+user.name+', age:'+user.age+'})') Delete
         </td>
     </tr>
 </tbody>
@@ -68,5 +68,24 @@ each user, i in users
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+script(type='text/javascript').
+    function deleteData(url, data) {
+        // Default options are marked with *
+        const response = fetch(url, {
+            method: "DELETE",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            redirect: "follow",
+            referrerPolicy: "no-referrer",
+            body: JSON.stringify(data),
+        });
+        return response.json();
+    }
+
 </body>
 </html>
