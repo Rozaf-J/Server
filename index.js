@@ -1,49 +1,26 @@
+const connect = require("./DB");
+const override = require("method-override");
 const express = require("express");
 const app = express();
 const port = 3000;
 
+app.use(override("_method"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "pug");
-
-let pgp = require("pg-promise")();
-let db = pgp("postgres://postgres:0803@localhost:5432/Users");
 
 app.get("/", (req, res) => {
   res.send("Hello world");
 });
 
-app.get("/add", (req, res) => {
-  db.any('SELECT * FROM "exprusr"')
-    .then((rows) => {
-      res.render("./table", { users: rows });
-      console.log(rows);
-    })
-    .catch((e) => console.log(e));
-});
+app.get("/add", connect.get_view_Users);
 
-app.post("/add", (req, res) => {
-  let text = 'INSERT INTO "exprusr" (name, age) VALUES ($1, $2)';
-  let values = [req.body.name, req.body.age];
+app.post("/add", connect.add_view_Users);
 
-  db.any('SELECT * FROM "exprusr"')
-    .then((rows) => {
-      const checkUsername = (obj) => obj.name === req.body.name;
-
-      if (!rows.some(checkUsername)) {
-        db.any(text, values).catch((e) => console.log(e));
-      } else console.log("db already has, ", values);
-
-      console.log(rows.some(checkUsername));
-    })
-    .catch((e) => console.log(e));
-
-  db.any('SELECT * FROM "exprusr"')
-    .then((rows) => {
-      res.render("./table", { users: rows });
-      console.log(rows);
-    })
-    .catch((e) => console.log(e));
+app.delete("/add", (req, res) => {
+  console.log(1, req, req.body);
+  // res.redirect("/add");
+  res.send("done!");
 });
 
 app.listen(port, () => {
