@@ -14,7 +14,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/add", (req, res) => {
-  db.any('SELECT * FROM "user"')
+  db.any('SELECT * FROM "exprusr"')
     .then((rows) => {
       res.render("./table", { users: rows });
       console.log(rows);
@@ -23,12 +23,22 @@ app.get("/add", (req, res) => {
 });
 
 app.post("/add", (req, res) => {
-  let text = 'INSERT INTO "user" (name, age) VALUES ($1, $2)';
+  let text = 'INSERT INTO "exprusr" (name, age) VALUES ($1, $2)';
   let values = [req.body.name, req.body.age];
 
-  db.any(text, values).catch((e) => console.log(e));
+  db.any('SELECT * FROM "exprusr"')
+    .then((rows) => {
+      const checkUsername = (obj) => obj.name === req.body.name;
 
-  db.any('SELECT * FROM "user"')
+      if (!rows.some(checkUsername)) {
+        db.any(text, values).catch((e) => console.log(e));
+      } else console.log("db already has, ", values);
+
+      console.log(rows.some(checkUsername));
+    })
+    .catch((e) => console.log(e));
+
+  db.any('SELECT * FROM "exprusr"')
     .then((rows) => {
       res.render("./table", { users: rows });
       console.log(rows);
