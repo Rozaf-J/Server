@@ -19,6 +19,8 @@ app.post("/add", connect.add_view_Users);
 
 app.delete("/add", connect.remove_view_user);
 
+app.put("/add", connect.update_view_user);
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
