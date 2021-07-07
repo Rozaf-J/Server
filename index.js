@@ -1,6 +1,7 @@
 const connect = require("./DB");
 const override = require("method-override");
 const express = require("express");
+const { body, validationResult } = require("express-validator");
 const app = express();
 const port = 3000;
 
@@ -15,7 +16,12 @@ app.get("/", (req, res) => {
 
 app.get("/add", connect.get_view_Users);
 
-app.post("/add", connect.add_view_Users);
+app.post(
+  "/add",
+  body("name").isString().isLength({ min: 2 }),
+  body("age").isNumeric(),
+  connect.add_view_Users
+);
 
 app.delete("/add", connect.remove_view_user);
 

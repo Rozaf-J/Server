@@ -1,6 +1,7 @@
 let pgp = require("pg-promise")();
 let db = pgp("postgres://postgres:0803@localhost:5432/Users");
 let table = "exprusr";
+const { body, validationResult } = require("express-validator");
 
 exports.get_view_Users = (req, res) => {
   db.any("SELECT * FROM " + table)
@@ -11,6 +12,11 @@ exports.get_view_Users = (req, res) => {
 };
 
 exports.add_view_Users = (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).render("./Alarm");
+  }
+
   let text = "INSERT INTO " + table + " (name, age) VALUES ($1, $2)";
   let values = [req.body.name, req.body.age];
 
