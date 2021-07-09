@@ -1,10 +1,12 @@
 const connect = require("./DB");
+const cors = require("cors");
 const { body, validationResult } = require("express-validator");
 const override = require("method-override");
 const express = require("express");
 const app = express();
 const port = 3000;
 
+app.use(cors());
 app.use(override("_method"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
