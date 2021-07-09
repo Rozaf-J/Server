@@ -1,6 +1,6 @@
 let pgp = require("pg-promise")();
 let db = pgp("postgres://postgres:0803@localhost:5432/Users");
-let table = "exprusr";
+let table = "user";
 const { body, validationResult } = require("express-validator");
 
 exports.get_view_Users = (req, res) => {
