@@ -115,11 +115,11 @@ script(type='text/javascript').
 
 script(type='text/javascript').
     function userUpdate(name, age) {
-        let name_set = document.getElementById(''+name+'').values;
+        let name_set = document.getElementById(name).value;
         let age_set = document.getElementById(""+age+"").value;
 
         const url = 'http://localhost:3000/add';
-        const data = {old_name: name, old_age: age, new_name: name_set, new_age: age_set};
+        const data = {old_name: name, old_age: age, new_name: document.getElementById(""+name+"").value, new_age: age_set};
 
         try {
             const response = fetch(url, {
