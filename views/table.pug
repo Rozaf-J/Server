@@ -9,7 +9,7 @@
 
 <div class="row">
 <nav id="navbar-example3" class="navbar navbar-light bg-light flex-column align-items-stretch p-3 col-2" style="height: 300px">
-<a class="navbar-brand" href="#">DB managment</a>
+<a class="navbar-brand">DB managment</a>
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add new user</button>
 <button type="button" class="btn btn-primary">smth</button>
 <button type="button" class="btn btn-primary">smth</button>
@@ -21,6 +21,7 @@
 <tr>
 <th scope="col">Name</th>
 <th scope="col">Age</th>
+<th scope="col">Actions</th>
 </tr>
 </thead>
 <tbody>
@@ -29,9 +30,34 @@ each user, i in users
         td= user.name
         td= user.age
         <td>
-            button(type="submit" class='btn btn-danger' value="Delete" onclick='userDelete("'+ user.name +'");') Delete
+            button(type="button" class='btn btn-success mx-4' data-bs-toggle="modal" data-bs-target="#"+user.name) Upadate
+            button(type="submit" class='btn btn-danger' onclick='userDelete("'+ user.name +'");') Delete
         </td>
     </tr>
+    div(class="modal fade" id=user.name tabindex="-1" aria-labelledby=user.name aria-hidden="true")
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    h5(class="modal-title" id=user.name) Add new user
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body row">
+                    <div class="mb-3 col">
+                        <label for="exampleInputEmail1" class="form-label">Name</label>
+                        input(class="form-control" name="name_set" id=""+user.name+"" placeholder="" + user.name + "")
+                    </div>
+                    <div class="mb-3 col">
+                        <label for="exampleInputPassword1" class="form-label">Age</label>
+                        input(class="form-control" name="age_set" id=user.age placeholder="" + user.age + "")
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    button(class="btn btn-primary" onclick='userUpdate("'+user.name+'", '+ user.age +');') Save changes
+                </div>
+            </div>
+        </div>
+
 </tbody>
 </table>
 </div>
@@ -40,8 +66,7 @@ each user, i in users
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 <div class="modal-dialog">
 <div class="modal-content">
-
-<form method="post">
+<form id="form" method="post">
 <div class="modal-header">
 <h5 class="modal-title" id="exampleModalLabel">Add new user</h5>
 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -58,10 +83,9 @@ each user, i in users
 </div>
 <div class="modal-footer">
 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-<button type="submit" class="btn btn-primary">Save user</button>
+<button type="submit" class="btn btn-primary" onclick="window.location.reload()">Save user</button>
 </div>
 </form>
-
 </div>
 </div>
 </div>
@@ -87,6 +111,30 @@ script(type='text/javascript').
             console.error('Ошибка:', error);
         }
         window.location.reload();
+    }
+
+script(type='text/javascript').
+    function userUpdate(name, age) {
+        let name_set = document.getElementById(''+name+'').values;
+        let age_set = document.getElementById(""+age+"").value;
+
+        const url = 'http://localhost:3000/add';
+        const data = {old_name: name, old_age: age, new_name: name_set, new_age: age_set};
+
+        try {
+            const response = fetch(url, {
+                method: 'PUT', // или 'PUT'
+                body: JSON.stringify(data), // данные могут быть 'строкой' или {объектом}!
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const json = response.json();
+            console.log('Успех:', JSON.stringify(json));
+        } catch (error) {
+            console.error('Ошибка:', error);
+        }
+        console.log("done!");
     }
 </body>
 </html>

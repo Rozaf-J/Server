@@ -1,10 +1,10 @@
 let pgp = require("pg-promise")();
-let db = pgp("postgres://postgres:0803@localhost:5432/Users");
-let table = "exprusr";
+let db = pgp("postgres://postgres:0803@localhost:5432/Names");
+let table = "users";
 const { body, validationResult } = require("express-validator");
 
 exports.get_view_Users = (req, res) => {
-  db.any("SELECT * FROM " + table)
+  db.any('SELECT * FROM "users"')
     .then((rows) => {
       res.render("./table", { users: rows });
     })
@@ -34,6 +34,7 @@ exports.add_view_Users = (req, res) => {
         .catch((e) => console.log(e));
     })
     .catch((e) => console.log(e));
+  res.redirect(req.get("referer"));
 };
 
 exports.remove_view_user = (req, res) => {
@@ -49,13 +50,15 @@ exports.remove_view_user = (req, res) => {
 };
 
 exports.update_view_user = (req, res) => {
-  let text = "UPDATE " + table + " SET age=$1 WHERE name = $2";
-  let values = [req.body.age, req.body.name];
-
-  db.any(text, values)
-    .then(() => {
-      console.log("Updated");
-      res.redirect("/add");
-    })
-    .catch((e) => console.log(e));
+  // let text = "UPDATE " + table + " SET age=$1 WHERE name = $2";
+  // let values = [req.body.age, req.body.name];
+  //
+  // db.any(text, values)
+  //   .then(() => {
+  //     console.log("Updated");
+  //     res.redirect("/add");
+  //   })
+  //   .catch((e) => console.log(e));
+  res.send("done!");
+  console.log(req.body);
 };
