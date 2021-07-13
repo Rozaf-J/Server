@@ -1,7 +1,8 @@
 let pgp = require("pg-promise")();
 let db = pgp("postgres://postgres:0803@localhost:5432/Names");
-let table = "users";
 const { body, validationResult } = require("express-validator");
+
+let table = "users";
 
 exports.get_view_Users = (req, res) => {
   db.any('SELECT * FROM "users"')
@@ -38,6 +39,11 @@ exports.add_view_Users = (req, res) => {
 };
 
 exports.remove_view_user = (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).render("./Alarm");
+  }
+
   let text = "DELETE FROM " + table + " WHERE name=$1";
   let values = [req.body.name];
 
@@ -50,15 +56,24 @@ exports.remove_view_user = (req, res) => {
 };
 
 exports.update_view_user = (req, res) => {
-  // let text = "UPDATE " + table + " SET age=$1 WHERE name = $2";
-  // let values = [req.body.age, req.body.name];
-  //
-  // db.any(text, values)
-  //   .then(() => {
-  //     console.log("Updated");
-  //     res.redirect("/add");
-  //   })
-  //   .catch((e) => console.log(e));
-  res.send("done!");
-  console.log(req.body);
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).render("./Alarm");
+  }
+
+  let text =
+    "UPDATE " + table + " SET name=$1, age=$2 WHERE name = $3 AND age=$4";
+  let values = [
+    req.body.new_name,
+    req.body.new_age,
+    req.body.old_name,
+    req.body.old_age,
+  ];
+
+  db.any(text, values)
+    .then(() => {
+      console.log("Updated");
+      res.redirect("/add");
+    })
+    .catch((e) => console.log(e));
 };

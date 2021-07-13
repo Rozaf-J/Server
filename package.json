@@ -18,7 +18,8 @@
     "method-override": "^3.0.0",
     "pg-promise": "^10.10.2",
     "prettier": "^2.3.2",
-    "pug": "^3.0.2"
+    "pug": "^3.0.2",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.9"

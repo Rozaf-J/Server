@@ -3,6 +3,7 @@ const cors = require("cors");
 const { body, validationResult } = require("express-validator");
 const override = require("method-override");
 const express = require("express");
+
 const app = express();
 const port = 3000;
 
@@ -25,9 +26,20 @@ app.post(
   connect.add_view_Users
 );
 
-app.delete("/add", connect.remove_view_user);
+app.delete(
+  "/add",
+  body("name").isString().isLength({ min: 2 }),
+  connect.remove_view_user
+);
 
-app.put("/add", connect.update_view_user);
+app.put(
+  "/add",
+  body("old_name").isString().isLength({ min: 2 }),
+  body("old_age").isNumeric(),
+  body("new_name").isString().isLength({ min: 2 }),
+  body("new_age").isNumeric(),
+  connect.update_view_user
+);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
