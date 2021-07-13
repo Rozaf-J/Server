@@ -114,8 +114,8 @@ script(type='text/javascript').
     }
 
 script(type='text/javascript').
-    function userUpdate(name, age, i) {
-        let name_set = document.getElementById("name."+i+"").value;
+    function userUpdate(name, age) {
+        let name_set = document.getElementById(name).value;
         let age_set = document.getElementById(""+age+"").value;
 
         const url = 'http://localhost:3000/add';
