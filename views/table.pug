@@ -44,7 +44,7 @@ each user, i in users
                 <div class="modal-body row">
                     <div class="mb-3 col">
                         <label for="exampleInputEmail1" class="form-label">Name</label>
-                        input(class="form-control" name="name_set" id=""+user.name+"" placeholder="" + user.name + "")
+                        input(class="form-control" name="name_set" id="username."+i+"" placeholder="" + user.name + "")
                     </div>
                     <div class="mb-3 col">
                         <label for="exampleInputPassword1" class="form-label">Age</label>
@@ -53,7 +53,7 @@ each user, i in users
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    button(class="btn btn-primary" onclick='userUpdate("'+user.name+'", '+ user.age +');') Save changes
+                    button(class="btn btn-primary" onclick='userUpdate("'+user.name+'", '+ user.age +', '+i+');') Save changes
                 </div>
             </div>
         </div>
@@ -114,8 +114,8 @@ script(type='text/javascript').
     }
 
 script(type='text/javascript').
-    function userUpdate(name, age) {
-        let name_set = document.getElementById(name).value;
+    function userUpdate(name, age, i) {
+        let name_set = document.getElementById('username.' +i).value;
         let age_set = document.getElementById(""+age+"").value;
 
         const url = 'http://localhost:3000/add';
