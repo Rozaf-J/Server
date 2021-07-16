@@ -1,4 +1,4 @@
-const connect = require("./DB");
+const db = require("./DB");
 const cors = require("cors");
 const { body, validationResult } = require("express-validator");
 const override = require("method-override");
@@ -14,22 +14,22 @@ app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "pug");
 
 app.get("/", (req, res) => {
-  res.send("Hello world");
+  db.get_users().then(users => {
+    res.render("./usersList", { users })
+  })
 });
-
-app.get("/add", connect.get_view_Users);
 
 app.post(
   "/add",
   body("name").isString().isLength({ min: 2 }),
   body("age").isNumeric(),
-  connect.add_view_Users
+  db.add_view_Users
 );
 
 app.delete(
   "/add",
   body("name").isString().isLength({ min: 2 }),
-  connect.remove_view_user
+  db.remove_view_user
 );
 
 app.put(
@@ -38,7 +38,7 @@ app.put(
   body("old_age").isNumeric(),
   body("new_name").isString().isLength({ min: 2 }),
   body("new_age").isNumeric(),
-  connect.update_view_user
+  db.update_view_user
 );
 
 app.listen(port, () => {
