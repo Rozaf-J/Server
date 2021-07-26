@@ -1,140 +1,61 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Title</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-</head>
-<body class="container p-5">
+extends layout.pug
+block content
+    div(class="row")
+        nav(id="navbar-example3" class="navbar navbar-light bg-light flex-column align-items-stretch p-3 col-2" style="height: 300px")
+            a(class="navbar-brand") DB managment
+            button(type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal") Add new user
+            button(type="button" class="btn btn-primary") smth
+            button(type="button" class="btn btn-primary") smth
 
-<div class="row">
-<nav id="navbar-example3" class="navbar navbar-light bg-light flex-column align-items-stretch p-3 col-2" style="height: 300px">
-<a class="navbar-brand">DB managment</a>
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add new user</button>
-<button type="button" class="btn btn-primary">smth</button>
-<button type="button" class="btn btn-primary">smth</button>
-</nav>
+        div(data-bs-spy="scroll" data-bs-target="#navbar-example3" data-bs-offset="0" tabindex="0" class="col")
+            table(class="table")
+                thead
+                    tr
+                        th(scope="col") Name
+                        th(scope="col") Age
+                        th(scope="col") Actions
+                tbody
+                    each user, i in users
+                        tr
+                            td= user.name
+                            td= user.age
+                            td
+                                button(type="button" class='btn btn-success mx-4' data-bs-toggle="modal" data-bs-target="#" + user.name) Upadate
+                                button(type="submit" class='btn btn-danger' onclick='userDelete("' + user.name + '");') Delete
+                        div(class="modal fade" id=user.name tabindex="-1" aria-labelledby=user.name aria-hidden="true")
+                            div(class="modal-dialog")
+                                div(class="modal-content")
+                                    div(class="modal-header")
+                                        h5(class="modal-title" id=user.name) Add new user
+                                        button(type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close")
+                                    div(class="modal-body row")
+                                        div(class="mb-3 col")
+                                            label(for="exampleInputName" class="form-label") Name
+                                            input(class="form-control" name="name_set" id="name." + i + "" placeholder="" + user.name + "")
+                                        div(class="mb-3 col")
+                                            label(for="exampleInputAge" class="form-label") Age
+                                            input(class="form-control" name="age_set" id=user.age placeholder="" + user.age + "")
+                                    div(class="modal-footer")
+                                        button(type="button" class="btn btn-secondary" data-bs-dismiss="modal") Close
+                                        button(class="btn btn-primary" onclick='userUpdate("' + user.name + '", ' + user.age + ', ' + i + ');') Save changes
 
-<div data-bs-spy="scroll" data-bs-target="#navbar-example3" data-bs-offset="0" tabindex="0" class="col">
-<table class="table">
-<thead>
-<tr>
-<th scope="col">Name</th>
-<th scope="col">Age</th>
-<th scope="col">Actions</th>
-</tr>
-</thead>
-<tbody>
-each user, i in users
-    <tr>
-        td= user.name
-        td= user.age
-        <td>
-            button(type="button" class='btn btn-success mx-4' data-bs-toggle="modal" data-bs-target="#"+user.name) Upadate
-            button(type="submit" class='btn btn-danger' onclick='userDelete("'+ user.name +'");') Delete
-        </td>
-    </tr>
-    div(class="modal fade" id=user.name tabindex="-1" aria-labelledby=user.name aria-hidden="true")
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    h5(class="modal-title" id=user.name) Add new user
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body row">
-                    <div class="mb-3 col">
-                        <label for="exampleInputEmail1" class="form-label">Name</label>
-                        input(class="form-control" name="name_set" id="name."+i+"" placeholder="" + user.name + "")
-                    </div>
-                    <div class="mb-3 col">
-                        <label for="exampleInputPassword1" class="form-label">Age</label>
-                        input(class="form-control" name="age_set" id=user.age placeholder="" + user.age + "")
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    button(class="btn btn-primary" onclick='userUpdate("'+user.name+'", '+ user.age +', '+i+');') Save changes
-                </div>
-            </div>
-        </div>
+    div(class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true")
+        div(class="modal-dialog")
+            div(class="modal-content")
+                div(class="modal-header")
+                    h5(class="modal-title" id="exampleModalLabel") Add new user
+                    button(type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close")
+                div(class="modal-body row")
+                    div(class="mb-3 col")
+                        label(class="form-label") Name
+                        input(class="form-control" name="name" id="name")
+                    div(class="mb-3 col")
+                        label(class="form-label") Age
+                        input(class="form-control" name="age" id="age")
+                div(class="modal-footer")
+                    button(type="button" class="btn btn-secondary" data-bs-dismiss="modal") Close
+                    button(class="btn btn-primary" onclick='userPost()') Save changes
 
-</tbody>
-</table>
-</div>
-</div>
-
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-<div class="modal-dialog">
-<div class="modal-content">
-<form id="form" method="post">
-<div class="modal-header">
-<h5 class="modal-title" id="exampleModalLabel">Add new user</h5>
-<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-</div>
-<div class="modal-body row">
-<div class="mb-3 col">
-<label for="exampleInputEmail1" class="form-label">Name</label>
-<input class="form-control" name="name" id="name">
-</div>
-<div class="mb-3 col">
-<label for="exampleInputPassword1" class="form-label">Age</label>
-<input class="form-control" name="age" id="age">
-</div>
-</div>
-<div class="modal-footer">
-<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-<button type="submit" class="btn btn-primary" onclick="window.location.reload()">Save user</button>
-</div>
-</form>
-</div>
-</div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
-script(type='text/javascript').
-    function userDelete(name) {
-        const url = 'http://localhost:3000/add';
-        const data = {name: name};
-
-        try {
-            const response = fetch(url, {
-                method: 'DELETE', // или 'PUT'
-                body: JSON.stringify(data), // данные могут быть 'строкой' или {объектом}!
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            const json = response.json();
-            console.log('Успех:', JSON.stringify(json));
-        } catch (error) {
-            console.error('Ошибка:', error);
-        }
-        window.location.reload();
-    }
-
-script(type='text/javascript').
-    function userUpdate(name, age) {
-        let name_set = document.getElementById(name).value;
-        let age_set = document.getElementById(""+age+"").value;
-
-        const url = 'http://localhost:3000/add';
-        const data = {old_name: name, old_age: age, new_name: name_set, new_age: parseInt(age_set)};
-
-        try {
-            const response = fetch(url, {
-                method: 'PUT', // или 'PUT'
-                body: JSON.stringify(data), // данные могут быть 'строкой' или {объектом}!
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            const json = response.json();
-            console.log('Успех:', JSON.stringify(json));
-        } catch (error) {
-            console.error('Ошибка:', error);
-        }
-        window.location.reload();
-    }
-</body>
-</html>
+    script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous")
+    script
+        include js/FetchScripts.js

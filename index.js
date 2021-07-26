@@ -1,4 +1,5 @@
-const connect = require("./DB");
+const db = require("./src/DB");
+const VEH = require("./src/ValidationErrorHandler");
 const cors = require("cors");
 const { body, validationResult } = require("express-validator");
 const override = require("method-override");
@@ -13,30 +14,58 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "pug");
 
-app.get("/", connect.get_users);
+app.get("/", (req, res) => {
+  db.get_users().then((rows) => {
+    res.render("./usersList", { users: rows });
+  });
+});
 
 app.post(
-  "/add",
+  "/",
   body("name").isString().isLength({ min: 2 }),
   body("age").isNumeric(),
-  connect.add_view_Users
+  (req, res) => {
+    VEH.VErrorHandler(req, res);
+
+    let values = [req.body.name, req.body.age];
+
+    db.add_user(values);
+    res.redirect(req.get("referer"));
+  }
 );
 
-app.delete(
-  "/add",
-  body("name").isString().isLength({ min: 2 }),
-    connect.remove_view_user
-);
+app.delete("/", body("name").isString().isLength({ min: 2 }), (req, res) => {
+  VEH.VErrorHandler(req, res);
+
+  let values = [req.body.name];
+
+  db.remove_user(values).then(() => {
+    res.redirect(req.get("referer"));
+  });
+});
 
 app.put(
-  "/add",
+  "/",
   body("old_name").isString().isLength({ min: 2 }),
   body("old_age").isNumeric(),
   body("new_name").isString().isLength({ min: 2 }),
   body("new_age").isNumeric(),
-    connect.update_view_user
+  (req, res) => {
+    VEH.VErrorHandler(req, res);
+
+    let values = [
+      req.body.new_name,
+      req.body.new_age,
+      req.body.old_name,
+      req.body.old_age,
+    ];
+
+    db.update_user(values).then(() => {
+      res.redirect(req.get("referer"));
+    });
+  }
 );
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`App listening at http://localhost:${port}`);
 });
