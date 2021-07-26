@@ -1,16 +1,7 @@
 let pgp = require("pg-promise")();
-let db = pgp("postgres://postgres:0803@localhost:5432/Names");
+let db = pgp("postgres://postgres:0803@localhost:5432/Users");
+let table = "exprusr";
 const { body, validationResult } = require("express-validator");
-
-let table = "users";
-
-exports.get_view_Users = (req, res) => {
-  db.any('SELECT * FROM "users"')
-    .then((rows) => {
-      res.render("./table", { users: rows });
-    })
-    .catch((e) => console.log(e));
-};
 
 exports.add_view_Users = (req, res) => {
   const errors = validationResult(req);
@@ -33,6 +24,7 @@ exports.add_view_Users = (req, res) => {
           res.render("./table", { users: rows });
         })
         .catch((e) => console.log(e));
+      window.location.reload();
     })
     .catch((e) => console.log(e));
   res.redirect(req.get("referer"));
@@ -77,3 +69,10 @@ exports.update_view_user = (req, res) => {
     })
     .catch((e) => console.log(e));
 };
+exports.get_users = (req, res) => {
+    db.any('SELECT * FROM "exprusr"')
+        .then((rows) => {
+            res.render("./usersList", {users: rows});
+        })
+        .catch((e) => console.log(e));
+}
