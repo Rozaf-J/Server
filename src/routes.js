@@ -18,46 +18,55 @@ router
   .post(
     body("name").isString().isLength({ min: 2 }),
     body("age").isNumeric(),
-    (req, res) => {
+    async (req, res) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        console.log("smth wrong");
+        console.error("smth wrong");
         res.status(400).render("./Alarm");
       }
 
-      let values = [req.body.name, req.body.age];
+      try {
+        let values = [req.body.name, req.body.age];
 
-      db.add_user(values);
-      res.redirect(req.get("referer"));
+        await db.add_user(values);
+        await res.redirect(req.get("referer"));
+      } catch (e) {
+        console.log(e);
+      }
     }
   )
-  .delete(body("name").isString().isLength({ min: 2 }), (req, res) => {
+  .delete(body("name").isString().isLength({ min: 2 }), async (req, res) => {
     VEH.VErrorHandler(req, res);
 
-    let values = [req.body.name];
+    try {
+      let values = [req.body.name];
 
-    db.remove_user(values).then(() => {
-      res.redirect(req.get("referer"));
-    });
+      await db.remove_user(values);
+      await res.redirect(req.get("referer"));
+    } catch (e) {
+      console.log(e);
+    }
   })
   .put(
     body("old_name").isString().isLength({ min: 2 }),
     body("old_age").isNumeric(),
     body("new_name").isString().isLength({ min: 2 }),
     body("new_age").isNumeric(),
-    (req, res) => {
+    async (req, res) => {
       VEH.VErrorHandler(req, res);
 
-      let values = [
-        req.body.new_name,
-        req.body.new_age,
-        req.body.old_name,
-        req.body.old_age,
-      ];
-
-      db.update_user(values).then(() => {
-        res.redirect(req.get("referer"));
-      });
+      try {
+        let values = [
+          req.body.new_name,
+          req.body.new_age,
+          req.body.old_name,
+          req.body.old_age,
+        ];
+        await db.update_user(values);
+        await res.redirect(req.get("referer"));
+      } catch (e) {
+        console.log(e);
+      }
     }
   );
 
