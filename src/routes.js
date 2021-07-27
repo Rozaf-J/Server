@@ -10,10 +10,13 @@ router.use(function (req, res, next) {
 
 router
   .route("/")
-  .get((req, res) => {
-    db.get_users().then((rows) => {
-      res.render("./usersList", { users: rows });
-    });
+  .get(async (req, res) => {
+    try {
+      let data = await db.get_users();
+      await res.render("./usersList", { users: data });
+    } catch (e) {
+      console.log(e);
+    }
   })
   .post(
     body("name").isString().isLength({ min: 2 }),
