@@ -1,5 +1,5 @@
 {
-  "name": "ft1",
+  "name": "ExpressTests",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -12,20 +12,18 @@
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
-    "date-and-time": "^1.0.1",
-    "eslint": "^7.30.0",
     "express": "^4.17.1",
     "express-validator": "^6.12.0",
-    "method-override": "^3.0.0",
     "mongodb": "^4.0.1",
     "mongoose": "^5.13.3",
-    "node.date-time": "^1.2.2",
     "pg-promise": "^10.10.2",
-    "prettier": "^2.3.2",
     "pug": "^3.0.2",
-    "winston": "^3.3.3"
+    "winston": "^3.3.3",
+    "yup": "^0.32.9"
   },
   "devDependencies": {
-    "nodemon": "^2.0.9"
+    "nodemon": "^2.0.9",
+    "eslint": "^7.30.0",
+    "prettier": "^2.3.2"
   }
 }
