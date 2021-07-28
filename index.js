@@ -8,7 +8,7 @@ const port = 3000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(require("./routers/routes"));
+app.use(require("./routers/userRouter"));
 app.set("view engine", "pug");
 
 //Start server
