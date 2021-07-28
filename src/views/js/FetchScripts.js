@@ -1,4 +1,4 @@
-function userPost() {
+async function userPost() {
   let name = document.getElementById("name").value;
   let age = document.getElementById("age").value;
 
@@ -6,19 +6,18 @@ function userPost() {
   const data = { name: name, age: age };
 
   try {
-    const response = fetch(url, {
+    const response = await fetch(url, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
       },
     });
-    const json = response.json();
+    const json = await response.json();
     console.log("Успех:", JSON.stringify(json));
   } catch (error) {
     console.error("Ошибка:", error);
   }
-  window.location.reload();
 }
 
 function userDelete(name) {

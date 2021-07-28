@@ -20,7 +20,7 @@ block content
                             td= user.name
                             td= user.age
                             td
-                                button(type="button" class='btn btn-success mx-4' data-bs-toggle="modal" data-bs-target="#" + user.name) Upadate
+                                button(type="button" class='btn btn-success mx-4' data-bs-toggle="modal" data-bs-target="#" + user.name) Update
                                 button(type="submit" class='btn btn-danger' onclick='userDelete("' + user.name + '");') Delete
                         div(class="modal fade" id=user.name tabindex="-1" aria-labelledby=user.name aria-hidden="true")
                             div(class="modal-dialog")

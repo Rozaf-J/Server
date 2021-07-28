@@ -35,8 +35,8 @@ Upd_user = async (data) => {
 };
 
 module.exports = {
-  Get_user: Get_user,
-  Add_user: Add_user,
-  Del_user: Del_user,
-  Upd_user: Upd_user,
+  Get_user,
+  Add_user,
+  Del_user,
+  Upd_user,
 };

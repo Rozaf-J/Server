@@ -6,7 +6,7 @@ exports.validation = (schema) => (req, res, next) => {
       return next();
     } else {
       console.log("error");
-      return res.status(400).redirect("/alarm");
+      res.render("../src/views/alarm.pug", { error: "Wrong Data" });
     }
   });
 };
