@@ -1,8 +1,8 @@
-const db = require("../db/postreeDB");
+const mg = require("../db/mgActions");
 
 GET_users = async (req, res) => {
   try {
-    let data = await db.get_users();
+    let data = await mg.Get_user();
     await res.render("./usersList", { users: data });
   } catch (e) {
     console.log(e);
@@ -11,9 +11,7 @@ GET_users = async (req, res) => {
 
 POST_user = async (req, res) => {
   try {
-    let values = [req.body.name, req.body.age];
-
-    await db.add_user(values);
+    await mg.Add_user(req.body);
     await res.redirect(req.get("referer"));
   } catch (e) {
     console.log(e);
@@ -22,9 +20,9 @@ POST_user = async (req, res) => {
 
 DELETE_user = async (req, res) => {
   try {
-    let values = [req.body.name];
+    let value = [req.body.name];
 
-    await db.remove_user(values);
+    await mg.Del_user(value);
     await res.redirect(req.get("referer"));
   } catch (e) {
     console.log(e);
@@ -39,7 +37,7 @@ PUT_user = async (req, res) => {
       req.body.old_name,
       req.body.old_age,
     ];
-    await db.update_user(values);
+    await mg.Upd_user(values);
     await res.redirect(req.get("referer"));
   } catch (e) {
     console.log(e);

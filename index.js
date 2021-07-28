@@ -1,6 +1,7 @@
 //Set up and import modules
 const cors = require("cors");
 const express = require("express");
+const mongo = require("./db/mongoConnect");
 const app = express();
 const port = 3000;
 
@@ -13,5 +14,6 @@ app.set("view engine", "pug");
 
 //Start server
 app.listen(port, () => {
+  mongo.connect();
   console.log(`App listening at http://localhost:${port}`);
 });
